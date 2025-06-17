@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema(
   {
@@ -38,7 +39,13 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    
+    // child reference (one to many)
+    wishlist: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Product',
+      },
+    ],
     addresses: [
       {
         id: { type: mongoose.Schema.Types.ObjectId },

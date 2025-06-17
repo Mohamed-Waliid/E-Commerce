@@ -1,22 +1,57 @@
 const express = require('express');
+const {
+  getProductValidator,
+  createProductValidator,
+  updateProductValidator,
+  deleteProductValidator,
+} = require('../utils/validators/productValidator');
 
 const {
-    getAllProducts,
-    getProduct,
-    createProduct,
-    updateProduct,
-    deleteProduct
+  getProducts,
+  getProduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  uploadProductImages,
+  resizeProductImages,
 } = require('../Controllers/productController');
-
 const authService = require('../Controllers/authController');
+const reviewsRoute = require('./reviewRoute');
 
 const router = express.Router();
 
-router.get('/', getAllProducts);
-router.post('/', createProduct);
-router.get('/:id', getProduct);
-router.put('/:id', updateProduct);
-router.delete('/:id', deleteProduct);
+// POST   /products/jkshjhsdjh2332n/reviews
+// GET    /products/jkshjhsdjh2332n/reviews
+// GET    /products/jkshjhsdjh2332n/reviews/87487sfww3
+router.use('/:productId/reviews', reviewsRoute);
 
+router
+  .route('/')
+  .get(getProducts)
+  .post(
+    authService.protect,
+    authService.allowedTo('admin', 'manager'),
+    uploadProductImages,
+    resizeProductImages,
+    createProductValidator,
+    createProduct
+  );
+router
+  .route('/:id')
+  .get(getProductValidator, getProduct)
+  .put(
+    authService.protect,
+    authService.allowedTo('admin', 'manager'),
+    uploadProductImages,
+    resizeProductImages,
+    updateProductValidator,
+    updateProduct
+  )
+  .delete(
+    authService.protect,
+    authService.allowedTo('admin'),
+    deleteProductValidator,
+    deleteProduct
+  );
 
 module.exports = router;

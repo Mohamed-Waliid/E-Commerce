@@ -15,8 +15,7 @@ const router = express.Router();
 
 router.use(authService.protect);
 
-router.get(
-  '/checkout-session/:cartId',
+router.get('/checkout-session/:cartId',
   authService.allowedTo('user'),
   checkoutSession
 );
@@ -30,13 +29,11 @@ router.get(
 );
 router.get('/:id', findSpecificOrder);
 
-router.put(
-  '/:id/pay',
+router.put('/:id/pay',
   authService.allowedTo('admin', 'manager'),
   updateOrderToPaid
 );
-router.put(
-  '/:id/deliver',
+router.put('/:id/deliver',
   authService.allowedTo('admin', 'manager'),
   updateOrderToDelivered
 );

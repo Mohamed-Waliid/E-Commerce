@@ -1,60 +1,27 @@
+const factory = require('../Controllers/crudOperations');
 const Coupon = require('../DB/models/couponModel');
-const asyncHandler = require('express-async-handler');
 
-//Create a new coupon
-exports.createCoupon = asyncHandler(async (req, res) => {
-  const coupon = await Coupon.create(req.body);
-  res.status(201).json({ 
-    status: 'success', 
-    data: coupon 
-    });
-});
+// @desc    Get list of coupons
+// @route   GET /api/v1/coupons
+// @access  Private/Admin-Manager
+exports.getCoupons = factory.getAll(Coupon);
 
-//Get all coupons
-exports.getAllCoupons = asyncHandler(async (req, res) => {
-  const coupons = await Coupon.find();
-  res.status(200).json({ 
-    status: 'success', 
-    results: coupons.length, 
-    data: coupons 
-    });
-});
+// @desc    Get specific coupon by id
+// @route   GET /api/v1/coupons/:id
+// @access  Private/Admin-Manager
+exports.getCoupon = factory.getOne(Coupon);
 
-//Get a single coupon by ID
-exports.getCoupon = asyncHandler(async (req, res) => {
-  const coupon = await Coupon.findById(req.params.id);
-  if (!coupon) {
-    return res.status(404).json({ message: 'Coupon not found' });
-  }
-  res.status(200).json({ 
-    status: 'success', 
-    data: coupon 
-    });
-});
+// @desc    Create coupon
+// @route   POST  /api/v1/coupons
+// @access  Private/Admin-Manager
+exports.createCoupon = factory.createOne(Coupon);
 
-//Update a coupon by ID
-exports.updateCoupon = asyncHandler(async (req, res) => {
-  const coupon = await Coupon.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  if (!coupon) {
-    return res.status(404).json({ message: 'Coupon not found' });
-  }
-  res.status(200).json({ 
-    status: 'success', 
-    data: coupon 
-    });
-});
+// @desc    Update specific coupon
+// @route   PUT /api/v1/coupons/:id
+// @access  Private/Admin-Manager
+exports.updateCoupon = factory.updateOne(Coupon);
 
-//Delete a coupon by ID
-exports.deleteCoupon = asyncHandler(async (req, res) => {
-  const coupon = await Coupon.findByIdAndDelete(req.params.id);
-  if (!coupon) {
-    return res.status(404).json({ message: 'Coupon not found' });
-  }
-  res.status(204).json({ 
-    status: 'success', 
-    data: null 
-    });
-});
+// @desc    Delete specific coupon
+// @route   DELETE /api/v1/coupons/:id
+// @access  Private/Admin-Manager
+exports.deleteCoupon = factory.deleteOne(Coupon);
