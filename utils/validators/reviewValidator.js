@@ -1,6 +1,6 @@
 const { check, body } = require('express-validator');
 const validatorMiddleware = require('../../middlewares/validatorMiddleware');
-const Review = require('../../models/reviewModel');
+const Review = require('../../DB/models/reviewModel');
 
 exports.createReviewValidator = [
   check('title').optional(),

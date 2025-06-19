@@ -2,7 +2,7 @@ const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
 const asyncHandler = require('express-async-handler');
 
-const factory = require('./controllers/crudOperations');
+const factory = require('./crudOperations');
 const { uploadSingleImage } = require('../middlewares/uploadImageMiddleware');
 const Category = require('../DB/models/categoryModel');
 
